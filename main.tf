@@ -9,8 +9,8 @@ resource "aws_s3_bucket" "example_bucket" {
 resource "aws_s3_bucket_object" "example_object" {
   bucket = aws_s3_bucket.example_bucket.id
   key    = "lambda_function.py"
-  source = "${path.module}/lambda_function.py"
-  etag   = filemd5("${path.module}/lambda_function.py")
+  source = "path/to/lambda_function.py"
+  etag   = filemd5("path/to/lambda_function.py")
 }
 
 resource "aws_sns_topic" "example_topic" {
@@ -33,17 +33,12 @@ resource "aws_lambda_function" "example_lambda" {
   runtime          = "python3.8"
   role             = aws_iam_role.example_role.arn
   filename         = aws_s3_bucket_object.example_object.id
-  source_code_hash = filebase64sha256("${path.module}/lambda_function.py")
+  source_code_hash = filebase64sha256("path/to/lambda_function.py")
 
   environment {
     variables = {
       KEY = "VALUE"
     }
-  }
-
-  event_source_mapping {
-    event_source_arn = aws_sqs_queue.example_queue.arn
-    batch_size       = 10
   }
 }
 
