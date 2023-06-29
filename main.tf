@@ -46,7 +46,7 @@ resource "aws_lambda_function" "example_lambda" {
   function_name    = "example-lambda"
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
-  role             = aws_iam_role.example_role.arn
+  role             = aws_iam_role.lambda_role.arn
   filename         = aws_s3_bucket_object.lambda-sns-object.id
   source_code_hash = data.local_file.lambda_md5.content_base64sha256
 
