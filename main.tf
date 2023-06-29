@@ -10,7 +10,7 @@ resource "aws_s3_bucket_object" "lambda-sns-object" {
   bucket = aws_s3_bucket.lambda-sns-buc.id
   key    = "lambda_function.py"
   source = "${path.module}/lambda_function.py"
-  etag   = filemd5("${path.module}/lambda_function.py")
+  #etag   = filemd5("${path.module}/lambda_function.py")
 
   provisioner "local-exec" {
     command = "md5sum ./lambda/lambda_function.py | cut -d ' ' -f 1 > lambda_md5.txt"
