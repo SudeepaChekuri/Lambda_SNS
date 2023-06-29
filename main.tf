@@ -39,12 +39,12 @@ resource "aws_sqs_queue" "example_queue" {
 
 resource "aws_sns_topic_subscription" "example_subscription" {
   topic_arn = aws_sns_topic.example_topic.arn
-  protocol  = "sqs"
-  endpoint  = aws_sqs_queue.example_queue.arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.my_lambda.arn
 }
 
-resource "aws_lambda_function" "example_lambda" {
-  function_name    = "example-lambda"
+resource "aws_lambda_function" "my_lambda" {
+  function_name    = "my-lambda"
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
   role             = aws_iam_role.lambda_role.arn
@@ -54,6 +54,16 @@ resource "aws_lambda_function" "example_lambda" {
   environment {
     variables = {
       KEY = "VALUE"
+    }
+  }
+}
+ # Add SNS topic as a destination
+  destination_config {
+    on_success {
+      destination = aws_sns_topic.example_topic.arn
+    }
+    on_failure {
+      destination = aws_sns_topic.example_topic.arn
     }
   }
 }
