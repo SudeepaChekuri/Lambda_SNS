@@ -19,7 +19,7 @@ resource "aws_s3_bucket_object" "lambda-sns-object" {
   lifecycle {
     create_before_destroy = true
   }
-}
+} 
 
 data "local_file" "lambda_md5" {
   filename = "lambda_md5.txt"
