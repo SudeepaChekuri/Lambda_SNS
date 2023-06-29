@@ -2,12 +2,12 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-resource "aws_s3_bucket" "example_bucket" {
-  bucket = "example-bucket"
+resource "aws_s3_bucket" "lambda-sns-buc" {
+  bucket = "lambda-sns-buc"
 }
 
-resource "aws_s3_bucket_object" "example_object" {
-  bucket = aws_s3_bucket.example_bucket.id
+resource "aws_s3_bucket_object" "lambda-sns-object" {
+  bucket = aws_s3_bucket.lambda-sns-buc.id
   key    = "lambda_function.py"
   source = "./lambda/lambda_function.py"
 
@@ -23,7 +23,7 @@ resource "aws_s3_bucket_object" "example_object" {
 data "local_file" "lambda_md5" {
   filename = "lambda_md5.txt"
 
-  depends_on = [aws_s3_bucket_object.example_object]
+  depends_on = [aws_s3_bucket_object.lambda-sns-object]
 }
 
 
@@ -57,7 +57,7 @@ resource "aws_lambda_function" "example_lambda" {
   }
 }
 
-resource "aws_iam_role" "example_role" {
+resource "aws_iam_role" "lambda_role" {
   name = "example-role"
 
   assume_role_policy = <<EOF
