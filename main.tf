@@ -22,7 +22,11 @@ resource "aws_s3_bucket_object" "example_object" {
 
 data "local_file" "lambda_md5" {
   filename = "lambda_md5.txt"
+
+  depends_on = [aws_s3_bucket_object.example_object]
 }
+
+
 
 resource "aws_sns_topic" "example_topic" {
   name = "example-topic"
