@@ -56,16 +56,13 @@ resource "aws_lambda_function" "my_lambda" {
       KEY = "VALUE"
     }
   }
+}
 
  # Add SNS topic as a destination
-  destination_config {
-    on_success {
-      destination = aws_sns_topic.example_topic.arn
-    }
-    on_failure {
-      destination = aws_sns_topic.example_topic.arn
-    }
-  }
+  resource "aws_lambda_event_source_mapping" "sns_mapping" {
+  event_source_arn  = aws_sns_topic.example_topic.arn
+  function_name     = aws_lambda_function.my_lambda.function_name
+  starting_position = "LATEST"
 }
 
 
