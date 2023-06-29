@@ -56,7 +56,7 @@ resource "aws_lambda_function" "my_lambda" {
       KEY = "VALUE"
     }
   }
-}
+
  # Add SNS topic as a destination
   destination_config {
     on_success {
@@ -66,6 +66,7 @@ resource "aws_lambda_function" "my_lambda" {
       destination = aws_sns_topic.example_topic.arn
     }
   }
+}
 
 
 resource "aws_iam_role" "lambda_role" {
