@@ -24,13 +24,6 @@ data "local_file" "lambda_md5" {
   filename = "lambda_md5.txt"
 }
 
-resource "aws_lambda_function" "example_lambda" {
-  # Rest of your configuration
-
-  source_code_hash = data.local_file.lambda_md5.content_base64sha256
-}
-
-
 resource "aws_sns_topic" "example_topic" {
   name = "example-topic"
 }
@@ -51,7 +44,7 @@ resource "aws_lambda_function" "example_lambda" {
   runtime          = "python3.8"
   role             = aws_iam_role.example_role.arn
   filename         = aws_s3_bucket_object.example_object.id
-  source_code_hash = filebase64sha256("path/to/lambda_function.py")
+  source_code_hash = data.local_file.lambda_md5.content_base64sha256
 
   environment {
     variables = {
