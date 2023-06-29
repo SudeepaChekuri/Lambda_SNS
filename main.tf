@@ -9,8 +9,8 @@ resource "aws_s3_bucket" "example_bucket" {
 resource "aws_s3_bucket_object" "example_object" {
   bucket = aws_s3_bucket.example_bucket.id
   key    = "lambda_function.py"
-  source = "lambda/lambda_function.py"
-  etag   = filemd5("lambda/lambda_function.py")
+  source = "./lambda_function.py"
+  etag   = filemd5("./lambda_function.py")
 }
 
 resource "aws_sns_topic" "example_topic" {
