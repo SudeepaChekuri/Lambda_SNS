@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "lambda-sns-buc" {
 resource "aws_s3_bucket_object" "lambda-sns-object" {
   bucket = aws_s3_bucket.lambda-sns-buc.id
   key    = "lambda/lambda_function.py"
-  source = "${path.module}/lambda/lambda_function.py"
+  source = "./lambda/lambda_function.py"
   #etag   = filemd5("${path.module}/lambda/lambda_function.py")
 
   provisioner "local-exec" {
