@@ -1,16 +1,11 @@
-import json
-
 def lambda_handler(event, context):
-    # Process the event
-    message = event['Records'][0]['Sns']['Message']
-    print(f"Received message: {message}")
+    students = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
     
-    # Perform some business logic
     response = {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'body': 'students list in the class'
     }
     
     return response
-    
+
   
