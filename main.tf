@@ -59,10 +59,12 @@ resource "aws_lambda_function" "my_lambda" {
 }
 
  # Add SNS topic as a destination
-  resource "aws_lambda_event_source_mapping" "sns_mapping" {
-  event_source_arn  = aws_sns_topic.example_topic.arn
-  function_name     = aws_lambda_function.my_lambda.function_name
-  starting_position = "LATEST"
+  resource "aws_lambda_permission" "sns_permission" {
+  statement_id  = "AllowSNSInvocation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.my_lambda.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.example_topic.arn
 }
 
 
