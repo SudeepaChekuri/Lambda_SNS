@@ -9,9 +9,27 @@ resource "aws_s3_bucket" "example_bucket" {
 resource "aws_s3_bucket_object" "example_object" {
   bucket = aws_s3_bucket.example_bucket.id
   key    = "lambda_function.py"
-  source = "${path.module}/lambda/lambda_function.py"
-  etag   = filemd5("${path.module}/lambda/lambda_function.py")
+  source = "./lambda/lambda_function.py"
+
+  provisioner "local-exec" {
+    command = "md5sum ./lambda/lambda_function.py | cut -d ' ' -f 1 > lambda_md5.txt"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
+
+data "local_file" "lambda_md5" {
+  filename = "lambda_md5.txt"
+}
+
+resource "aws_lambda_function" "example_lambda" {
+  # Rest of your configuration
+
+  source_code_hash = data.local_file.lambda_md5.content_base64sha256
+}
+
 
 resource "aws_sns_topic" "example_topic" {
   name = "example-topic"
