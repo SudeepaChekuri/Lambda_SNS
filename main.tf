@@ -66,7 +66,7 @@ resource "aws_lambda_function" "my_lambda" {
       destination = aws_sns_topic.example_topic.arn
     }
   }
-}
+
 
 resource "aws_iam_role" "lambda_role" {
   name = "lambda_role"
