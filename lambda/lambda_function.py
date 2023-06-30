@@ -10,8 +10,36 @@
 import json
 
 def lambda_handler(event, context):
-    # Retrieve the message from the SNS event
-    sns_message = event['Records'][0]['Sns']['Message']
+    # Replace the event data with your desired structure
+    my_event = {
+        "Records": [
+            {
+                "EventSource": "aws:sns",
+                "EventVersion": "1.0",
+                "EventSubscriptionArn": "arn:aws:sns:us-east-1:123456789012:ExampleTopic",
+                "Sns": {
+                    "Type": "Notification",
+                    "MessageId": "abc123",
+                    "TopicArn": "arn:aws:sns:us-east-1:123456789012:ExampleTopic",
+                    "Subject": "ExampleSubject",
+                    "Message": "Hello from SNS!",
+                    "MessageAttributes": {
+                        "Attribute1": {
+                            "Type": "String",
+                            "Value": "Value1"
+                        },
+                        "Attribute2": {
+                            "Type": "String",
+                            "Value": "Value2"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+
+    # Retrieve the message from the modified event structure
+    sns_message = my_event['Records'][0]['Sns']['Message']
     
     # Process the message
     processed_message = process_message(sns_message)
